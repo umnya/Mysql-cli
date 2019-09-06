@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
-	"strings"
+//	"strings"
 )
 
 func main() {
-	line := "abcde"
-	fmt.Println(strings.Index(line, "f"))
+	line:="abcde"
+	
+	
+	//a:=strings.Index(line, "f")
+	fmt.Println(line[3:len(line)])
 }
