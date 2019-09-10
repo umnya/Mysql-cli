@@ -180,11 +180,18 @@ func aaa1(g *gocui.Gui, v *gocui.View) error {
 			return err
 		}
 
-		go displayMain(g, v)
-		go getSarInfo(g, v)
-
+		err = execAll(g, v)
+		if err != nil {
+			return err
+		}
 	}
 
+	return nil
+}
+
+func execAll(g *gocui.Gui, v *gocui.View) error {
+	go displayMain(g, v)
+	go getSarInfo(g, v)
 	return nil
 }
 
