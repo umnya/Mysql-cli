@@ -16,7 +16,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	//	"time"
 	"github.com/jroimartin/gocui"
 )
 
@@ -184,14 +183,25 @@ func aaa1(g *gocui.Gui, v *gocui.View) error {
 		if err != nil {
 			return err
 		}
+		/*
+			n := 0
+
+			for n < 5 {
+				time.Sleep(5 * time.Second)
+				err = execAll(g, v)
+				n = n + 1
+			}
+		*/
 	}
 
 	return nil
 }
 
 func execAll(g *gocui.Gui, v *gocui.View) error {
+
 	go displayMain(g, v)
 	go getSarInfo(g, v)
+	go getIostatInfo(g, v)
 	return nil
 }
 
@@ -281,6 +291,36 @@ func getSarInfo(g *gocui.Gui, v *gocui.View) error {
 	*/
 	g.Update(func(g *gocui.Gui) error {
 		v, err := g.View("side2")
+		if err != nil {
+			return err
+		}
+		v.Clear()
+		fmt.Fprintln(v, output)
+		return nil
+	})
+
+	return nil
+}
+
+func getIostatInfo(g *gocui.Gui, v *gocui.View) error {
+	//command := fmt.Sprintf("ssh %s sar 1 10", IP_ADDR)
+	out, err := exec.Command("ssh", IP_ADDR, "iostat", "-xm", "1", "3").Output()
+	output := string(out[:])
+	if err != nil {
+		return err
+	}
+	/*	var temp string
+		for output.Next() {
+			err := output.Scan(&temp)
+			if err != nil {
+				return err
+			}
+			result = fmt.Sprintf("%s \n %s", result, temp)
+
+		}
+	*/
+	g.Update(func(g *gocui.Gui) error {
+		v, err := g.View("side3")
 		if err != nil {
 			return err
 		}
